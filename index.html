@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Canteen: Predictive Density Forecast Simulator</title>
-    <!-- Tailwind CSS for modern responsive styling -->
+    <title>Smart Canteen: Immersive Predictive Density Forecast Simulator</title>
+    <!-- Tailwind CSS for high-fidelity adaptive layouts -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Prompt (Thai-English visual balance) -->
+    <!-- Google Fonts: Prompt (Provides absolute visual harmony for Thai-English texts) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Prompt', sans-serif;
+            background-color: #020617; /* Slate-950 */
         }
+        /* Hide scrollbars for crisp native app experience */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -29,45 +31,66 @@
         .animate-pulse-slow {
             animation: pulse-ring 2s infinite ease-in-out;
         }
+        /* Custom range slider styling override */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #f59e0b; /* Amber-500 */
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+            transition: transform 0.1s ease;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center justify-start p-4 md:p-8 selection:bg-amber-500 selection:text-slate-950">
+<body class="text-slate-100 min-h-screen flex flex-col items-center justify-start p-0 select-none">
 
-    <!-- Top Metadata Header (SIT Standard) -->
-    <div class="w-full max-w-6xl mb-6 border-b border-slate-800 pb-4 flex flex-col md:flex-row justify-between items-center gap-4">
-        <div class="text-center md:text-left">
-            <span class="px-3 py-1 text-[11px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-full tracking-wide uppercase">
-                SIT KMUTT • INT220 UX Design Final Hackathon
-            </span>
-            <h1 class="text-2xl md:text-3xl font-extrabold mt-2 text-white tracking-tight">Smart Canteen High-Fidelity Simulator</h1>
-            <p class="text-xs text-slate-400 mt-1">
-                FEATURE 3: Predictive Density Forecast | Solo Execution by Nod (Kanokpon Suebyam 67130500001)
-            </p>
-        </div>
-        <div class="flex flex-col gap-1 items-center md:items-end bg-slate-900/50 p-3 rounded-2xl border border-slate-800">
-            <span class="text-[11px] text-amber-400 font-bold">🎯 เป้าหมายการทดสอบ Usability (UT):</span>
-            <span class="text-[11px] text-slate-300">ให้ผู้ใช้ทดสอบสไลด์กราฟหาเวลากลางวัน และทำตามคำแนะนำ Nudge เพื่อเลื่อนเวลาพัก</span>
+    <!-- ================= TOP DESKTOP HEADER & MENU BAR (Hidden in Absolute Immersive Mode) ================= -->
+    <div id="desktopHeader" class="w-full bg-slate-900 border-b border-slate-800 p-4 transition-all duration-300">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <span class="px-2.5 py-0.5 text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-full tracking-wider uppercase">
+                    SIT KMUTT • INT220 Final Project Prototype
+                </span>
+                <h1 class="text-xl md:text-2xl font-black text-white mt-1">Smart Canteen High-Fidelity Simulator</h1>
+                <p class="text-xs text-slate-400">
+                    FEATURE 3: Predictive Density Forecast | Solo Execution by Nod (Kanokpon 67130500001)
+                </p>
+            </div>
+            
+            <!-- VIEW MODE CONTROLLERS -->
+            <div class="flex flex-wrap items-center gap-3">
+                <button onclick="toggleImmersiveMode(true)" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-950 font-extrabold text-xs rounded-xl shadow-lg shadow-amber-500/20 transition-all duration-300 active:scale-95 flex items-center gap-1.5">
+                    <span class="text-sm">📱</span> เข้าสู่โหมดแอปพลิเคชันเต็มจอ (Immersive Fullscreen)
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- Main Workspace Setup -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full max-w-6xl items-start">
+    <!-- ================= MAIN LAYOUT WRAPPER ================= -->
+    <div id="layoutContainer" class="max-w-6xl w-full p-4 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start transition-all duration-300">
         
-        <!-- ================= LEFT COLUMN: Mobile Screen Device Simulator (Cols: 5) ================= -->
+        <!-- COLUMN 1: Mobile Screen Viewport (Cols: 5) -->
         <div class="lg:col-span-5 flex justify-center">
-            <!-- iPhone 15 Pro Max Sized Physical Shell Simulator -->
-            <div class="relative w-[375px] h-[790px] bg-slate-950 rounded-[50px] p-[10px] shadow-[0_0_50px_rgba(0,0,0,0.8)] border-[6px] border-slate-800 ring-4 ring-slate-900 ring-offset-2 ring-offset-slate-950 flex flex-col overflow-hidden">
+            
+            <!-- DEVICE CONTAINER SHELL -->
+            <div id="deviceShell" class="relative w-[375px] h-[812px] bg-slate-950 rounded-[50px] p-[10px] shadow-[0_0_50px_rgba(0,0,0,0.8)] border-[6px] border-slate-800 ring-4 ring-slate-900 ring-offset-2 ring-offset-slate-950 flex flex-col overflow-hidden transition-all duration-300">
                 
-                <!-- Physical Camera Dynamic Island -->
-                <div class="absolute top-2 left-1/2 transform -translate-x-1/2 w-28 h-6 bg-black rounded-full z-50 flex items-center justify-between px-3">
+                <!-- Physical iPhone Notch (Dynamic Island) -->
+                <div id="dynamicIsland" class="absolute top-2 left-1/2 transform -translate-x-1/2 w-28 h-6 bg-black rounded-full z-50 flex items-center justify-between px-3 select-none pointer-events-none">
                     <span class="w-1.5 h-1.5 bg-slate-900 rounded-full"></span>
                     <span class="w-10 h-1 bg-slate-950 rounded-full"></span>
                     <span class="w-2 h-2 bg-blue-950/50 rounded-full"></span>
                 </div>
 
-                <!-- Top App OS Status Bar (System UI) -->
-                <div class="w-full h-8 pt-1 px-5 flex justify-between items-center text-[10px] text-slate-400 z-40 select-none">
-                    <span class="font-bold text-white">11:45 AM</span>
+                <!-- Top App OS Status Bar (System UI Indicators) -->
+                <div id="statusBar" class="w-full h-8 pt-1 px-5 flex justify-between items-center text-[10px] text-slate-400 z-40 select-none pointer-events-none">
+                    <span id="statusBarTime" class="font-bold text-white">11:45 AM</span>
                     <div class="flex items-center gap-1.5">
                         <svg class="w-3 h-3 text-slate-400 fill-current" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.22 19.58 10.57 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
                         <span class="font-bold text-white">5G</span>
@@ -77,7 +100,7 @@
                     </div>
                 </div>
 
-                <!-- APPLICATION TOP HEADER (Brand Identity) -->
+                <!-- APPLICATION BRAND HEADER -->
                 <div class="px-4 py-2 border-b border-slate-900 bg-slate-950 z-30 flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <div class="w-7 h-7 bg-amber-500 rounded-lg flex items-center justify-center font-extrabold text-slate-950 text-xs">SC</div>
@@ -87,17 +110,17 @@
                         </div>
                     </div>
                     <div class="relative p-1.5 bg-slate-900 rounded-xl border border-slate-800">
-                        <svg class="w-3.5 h-3.5 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                        <svg class="w-3.5 h-3.5 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
                         <span class="absolute top-0.5 right-0.5 w-1.5 h-1.5 bg-rose-500 rounded-full animate-ping"></span>
                     </div>
                 </div>
 
-                <!-- SCROLLABLE MOBILE APP MAIN VIEWPORT -->
+                <!-- SCROLLABLE MOBILE APP VIEWPORT (Main container) -->
                 <div class="flex-1 overflow-y-auto no-scrollbar px-3 py-3 bg-slate-950 flex flex-col gap-4">
                     
-                    <!-- USER INTERVIEW DRIVEN TAB SELECTOR (หญ. VS KFC) -->
+                    <!-- CANTEEN LOCATION TAB SELECTOR (หญ. vs KFC) -->
                     <div class="grid grid-cols-2 p-1 bg-slate-900 rounded-2xl border border-slate-800">
-                        <button id="btnHoryingTab" onclick="switchCanteenTab('horying')" class="py-2 text-[11px] font-bold rounded-xl transition-all duration-300 bg-amber-500 text-slate-950 shadow-md">
+                        <button id="btnHoryingTab" onclick="switchCanteenTab('horying')" class="py-2 text.5 text-[11px] font-bold rounded-xl transition-all duration-300 bg-amber-500 text-slate-950 shadow-md">
                             โรงอาหารหอหญิง (หญ.)
                         </button>
                         <button id="btnKfcTab" onclick="switchCanteenTab('kfc')" class="py-2 text-[11px] font-semibold rounded-xl transition-all duration-300 text-slate-400 hover:text-white">
@@ -105,11 +128,11 @@
                         </button>
                     </div>
 
-                    <!-- SMART RECOMMENDATION UI (Nudge Alert Box) -->
+                    <!-- SMART RECOMMENDATION UI (Nudge Alert Banner) -->
                     <div id="smartNudgeAlert" class="bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-2xl p-3.5 transition-all duration-300">
                         <div class="flex items-start gap-3">
                             <div class="p-2 bg-amber-500/10 text-amber-400 rounded-xl mt-0.5">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
                             </div>
                             <div class="flex-1">
                                 <div class="flex items-center justify-between">
@@ -131,7 +154,7 @@
                         </div>
                     </div>
 
-                    <!-- REAL-TIME OCCUPANCY DASHBOARD CARD (Section 1.1 with UI Overlap Bug Fix) -->
+                    <!-- REAL-TIME OCCUPANCY DASHBOARD CARD (Section 1.1) -->
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col gap-3">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
@@ -144,7 +167,7 @@
                             </span>
                         </div>
 
-                        <!-- Localized Information with flexible width container to prevent clipping -->
+                        <!-- Canteen Title and Badge -->
                         <div class="flex justify-between items-center gap-2 border-b border-slate-800/80 pb-3">
                             <div class="flex-1 min-w-0">
                                 <h3 id="canteenDisplayName" class="text-xs font-bold text-white truncate">โรงอาหารหอหญิง (หญ.)</h3>
@@ -170,19 +193,19 @@
                         </div>
                     </div>
 
-                    <!-- AI DENSITY FORECAST TIMELINE (Section 1.2 Interactive Component) -->
+                    <!-- AI DENSITY FORECAST TIMELINE (Section 1.2 Interactive Drag Component) -->
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col gap-4">
                         <div class="flex justify-between items-start">
                             <div>
                                 <span class="px-2 py-0.5 text-[8px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-md uppercase tracking-wider">AI Prediction Engine</span>
                                 <h4 class="text-xs font-bold text-white mt-1.5 flex items-center gap-1">
-                                    <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2m0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                                    <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2m0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                                     3-Hour Density Forecast Chart
                                 </h4>
                             </div>
                         </div>
 
-                        <!-- Graphical Bars Container (Dashed Line & Confidence Interval Shadow) -->
+                        <!-- Timeline Graphical Bars Layout -->
                         <div class="relative h-24 bg-slate-950 rounded-xl p-3 flex items-end justify-between border border-slate-850 overflow-hidden select-none">
                             <div class="absolute inset-x-0 top-6 border-t border-dashed border-blue-500/10 z-0"></div>
                             <div class="absolute inset-x-0 top-12 border-t border-dashed border-blue-500/5 z-0"></div>
@@ -221,25 +244,25 @@
                                 </div>
                             </div>
 
-                            <!-- Floating vertical scrubbing line indicator -->
+                            <!-- Scrubbing vertical line indicator -->
                             <div id="scrubLine" class="absolute top-0 bottom-0 w-[2px] bg-amber-500 pointer-events-none transition-all duration-150" style="left: 11%;">
                                 <div class="w-2 h-2 bg-amber-400 rounded-full -ml-0.75 -mt-0.5"></div>
                             </div>
                         </div>
 
-                        <!-- Drag & Scrub interactive element -->
+                        <!-- Timeline Interaction controls -->
                         <div class="flex flex-col gap-2">
                             <div class="flex justify-between items-center text-[9px] text-slate-400">
                                 <span>เวลาพักเที่ยงจำกัด 50 นาที</span>
                                 <span class="font-bold text-amber-400 flex items-center gap-1 animate-pulse">
-                                    👈 สไลด์เมาส์เพื่อดูการคาดการณ์อนาคต
+                                    👈 สไลด์ปรับช่วงเวลาเพื่อดูความหนาแน่นล่วงหน้า
                                 </span>
                             </div>
-                            <!-- Input slider representation -->
+                            <!-- Real HTML Input Range (Seamless scrubbing effect) -->
                             <input id="scrubSlider" type="range" min="1" max="6" value="1" oninput="scrubTimelineLogic(this.value)"
                                    class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500">
                             
-                            <!-- Dyn-info block -->
+                            <!-- Detailed feedback card (Changes dynamically on scrub) -->
                             <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-850 flex items-center justify-between transition-all duration-200">
                                 <div class="flex flex-col">
                                     <span class="text-[9px] text-slate-500 uppercase tracking-widest font-semibold">คาดการณ์ล่วงหน้า ณ เวลา</span>
@@ -253,10 +276,10 @@
                         </div>
                     </div>
 
-                    <!-- KMUTT STUDENT LOCALIZED VOICE DIALOGUE -->
-                    <div class="p-3 bg-slate-900/40 border border-slate-800 rounded-xl flex items-center gap-3 select-none">
-                        <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center font-bold text-[10px] text-slate-400 shrink-0">
-                            VOICE
+                    <!-- GEOGRAPHIC RESEARCH LOCAL INSIGHT CARD -->
+                    <div class="p-3.5 bg-slate-900/40 border border-slate-800 rounded-xl flex items-center gap-3 select-none">
+                        <div class="w-8 h-8 rounded-full bg-slate-800/80 flex items-center justify-center font-bold text-[10px] text-slate-400 shrink-0">
+                            KMUTT
                         </div>
                         <p class="text-[10px] text-slate-400 leading-relaxed italic">
                             "ถ้าจะไป หญ. รีบไปก่อน 11:30 เถอะ แต่อย่าไปช่วง 12:15 น. เลย เพราะจะโดนร้านลืมบิล อดกินแถมเดินหาที่นั่งร้อนก็เหนื่อยเปล่า..."
@@ -265,12 +288,12 @@
 
                 </div>
 
-                <!-- Touch Device Home Bar -->
-                <div class="w-full h-6 flex items-end justify-center pb-2 z-40">
+                <!-- Touch Device Home Indicator Bar -->
+                <div class="w-full h-6 flex items-end justify-center pb-2 z-40 select-none pointer-events-none">
                     <div class="w-28 h-1 bg-slate-800 rounded-full"></div>
                 </div>
 
-                <!-- USABILITY POPUP MODAL: Shift Confirm & SEQ Survey Collection (Section 4.1 Requirement) -->
+                <!-- USABILITY MODAL: Shift Schedule Confirmation & SEQ Questionnaire (Section 4.1 Post-Task Survey) -->
                 <div id="surveyModal" class="absolute inset-0 bg-slate-950/95 z-50 flex items-center justify-center p-4 hidden transition-all duration-300">
                     <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl w-full max-w-xs flex flex-col gap-4 text-center shadow-2xl">
                         <div class="w-10 h-10 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center mx-auto text-lg font-bold">
@@ -290,7 +313,7 @@
                                 "โดยรวมแล้ว คุณคิดว่าภารกิจการปรับเปลี่ยนตารางเวลา เพื่อหลีกเลี่ยงคิวโรงอาหารผ่านแอปพลิเคชันนี้ ยากหรือสะดวกสบายเพียงใด?"
                             </p>
                             
-                            <!-- Scale Buttons 1-7 -->
+                            <!-- SEQ Scale Buttons (Standard Minimum 44x44px target on mobile) -->
                             <div class="flex justify-between gap-1 mt-2">
                                 <button onclick="selectSeqRating(1)" class="seq-key w-7 h-6.5 text-[10px] bg-slate-800 text-slate-400 hover:bg-rose-500 hover:text-slate-950 font-bold rounded-lg transition-all">1</button>
                                 <button onclick="selectSeqRating(2)" class="seq-key w-7 h-6.5 text-[10px] bg-slate-800 text-slate-400 hover:bg-rose-500 hover:text-slate-950 font-bold rounded-lg transition-all">2</button>
@@ -315,23 +338,21 @@
             </div>
         </div>
 
-        <!-- ================= RIGHT COLUMN: Professional Sandbox Control Panel (Cols: 7) ================= -->
-        <div class="lg:col-span-7 flex flex-col gap-6">
+        <!-- ================= COLUMN 2: Original Desktop Controls (Cols: 7 - Hidden in Absolute Immersive Mode) ================= -->
+        <div id="desktopControls" class="lg:col-span-7 flex flex-col gap-6 transition-all duration-300">
             
-            <!-- EXCELLENCE DEMO CONTROLLER BLOCK -->
+            <!-- CONTROLLER SANDBOX PANEL -->
             <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
                 <div class="flex items-center gap-2">
                     <span class="p-2 bg-amber-500 text-slate-950 rounded-xl font-bold">⚙️</span>
                     <h2 class="text-base font-black text-white">SIT Exam Sandbox Control Panel</h2>
                 </div>
-                <p class="text-xs text-slate-400 mt-2 leading-relaxed">
-                    น้องน็อดสามารถใช้กล่องควบคุมนี้ระหว่างการนำเสนอกับอาจารย์ เพื่อสาธิตกลไกจำลองตรรกะ **Edge Cases** ยุ่งยากที่ AI ทั่วไปออกแบบไม่ได้ตามข้อกำหนดในบทเรียนและไฟล์ PRD ของน้อง:
-                </p>
+                
 
-                <!-- Sandbox Controls Grid -->
+                <!-- Action Triggers Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
                     
-                    <!-- CONTROL 1: Black Swan Tour Bus Trigger -->
+                    <!-- Edge Case 1 Container -->
                     <div class="p-4 bg-slate-950 rounded-2xl border border-slate-850 flex flex-col gap-2">
                         <div class="flex justify-between items-center">
                             <span class="text-xs font-bold text-rose-400 flex items-center gap-1">
@@ -340,14 +361,14 @@
                             <span id="labelSwanStatus" class="text-[8px] bg-slate-900 text-slate-500 px-2 py-0.5 rounded-full font-bold uppercase">Idle</span>
                         </div>
                         <p class="text-[11px] text-slate-400 leading-relaxed">
-                            จำลองเหตุการณ์ที่มีรถทัวร์โรงเรียนมาจอดกะทันหัน หรือฝนตกกระหน่ำ ทำให้ AI Prediction ผิดเพี้ยน (Loss of Trust)
+                            จำลองเหตุการณ์ที่มีรถทัวร์คณะทัศนศึกษามาลงจอดกะทันหัน หรือฝนตกหนักแบบฉับพลัน ทำให้สถิติการทำนายของ AI Prediction คลาดเคลื่อนจากความเป็นจริง
                         </p>
                         <button onclick="triggerBlackSwanSimulation()" class="mt-2 py-2 px-3 bg-rose-600/10 hover:bg-rose-600/25 text-rose-300 border border-rose-500/20 font-bold text-xs rounded-xl transition-all">
                             Trigger Black Swan (Tour Bus)
                         </button>
                     </div>
 
-                    <!-- CONTROL 2: Herd Effect Load Balancer Cohort Change -->
+                    <!-- Edge Case 2 Container -->
                     <div class="p-4 bg-slate-950 rounded-2xl border border-slate-850 flex flex-col gap-2">
                         <div class="flex justify-between items-center">
                             <span class="text-xs font-bold text-blue-400 flex items-center gap-1">
@@ -356,7 +377,7 @@
                             <span id="labelHerdStatus" class="text-[8px] bg-slate-900 text-slate-500 px-2 py-0.5 rounded-full font-bold uppercase">Cohort A</span>
                         </div>
                         <p class="text-[11px] text-slate-400 leading-relaxed">
-                            สลับการแสดงผลคำแนะนำกลุ่ม Cohorts (A และ B) เพื่อกระจาย Traffic แบบ Dynamic ป้องกันผู้ใช้แห่ไปช่วงเดียวกัน
+                            สลับการจำลองกลุ่มข้อมูลผู้ใช้คำค้นหา (Users Query Cohorts) เพื่อกระจาย Traffic แบบ Dynamic ป้องกันปัญหาฝูงชนแห่ตามคำแนะนำ AI ไปเวลาเดียวจนเกิด Peak ใหม่
                         </p>
                         <button onclick="toggleHerdEffectSimulation()" class="mt-2 py-2 px-3 bg-blue-600/10 hover:bg-blue-600/25 text-blue-300 border border-blue-500/20 font-bold text-xs rounded-xl transition-all">
                             Switch User Cohort (A / B)
@@ -365,7 +386,7 @@
 
                 </div>
 
-                <!-- Reset control center -->
+                <!-- Footer control actions -->
                 <div class="mt-5 flex justify-end border-t border-slate-800 pt-4">
                     <button onclick="resetAllSimulation()" class="py-2 px-4 bg-slate-800 hover:bg-slate-750 text-slate-200 text-xs font-bold rounded-xl transition-all">
                         Reset Simulator to Default State
@@ -373,50 +394,115 @@
                 </div>
             </div>
 
-            <!-- THEORIES REINFORCEMENT CARDS FOR USER INTERVIEW METRICS -->
+            <!-- THEORIES EVIDENCE REINFORCEMENT PANEL -->
             <div class="bg-slate-900/50 border border-slate-800 rounded-3xl p-6">
                 <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                    User Research Evidence (หลักฐานการเก็บข้อมูลจริงที่ หญ. vs KFC)
+                    Field Research Insights (สรุปประเด็น หญ. vs KFC จากสัมภาษณ์จริง)
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-xs leading-relaxed">
                     <div class="p-3.5 bg-slate-950/40 rounded-xl border border-slate-850">
-                        <span class="text-amber-400 font-bold">📍 โรงอาหารหอหญิง (หญ.):</span>
+                        <span class="text-amber-400 font-bold block">📍 โรงอาหารหอหญิง (หญ.) Context</span>
                         <p class="text-slate-300 mt-1">
-                            นักศึกษาพึงพอใจเรื่อง **"ความถูก อร่อย และมีกับข้าวแกงเยอะ"** แต่มีจุดเสียเปรียบสูงมากเรื่องการรออาหารคิวนาน โดยเฉพาะร้านข้าวมันไก่และอาหารตามสั่งช่วง Peak Hour (12:00-12:30 น.) บางครั้งเกิดอุปสรรคระบบจัดการ "ร้านทำออเดอร์ตกหล่น" จนทำให้คนเทสบางคนจำยอมต้องเดินกลับไปสั่งเมนูอื่นใหม่
+                            ข้าวแกงอร่อยเด็ดขาดและราคาย่อมเยาที่สุดในมหาวิทยาลัย แต่เผชิญจุดอ่อนร้ายแรงช่วง Peak (12:00 น.) คือที่นั่งหาได้ยากยิ่ง คิวคอยอาหารยาวสะสม และเกิดอุปสรรคร้านค้านับบิลคิวตกหล่นจนนักศึกษาต้องสั่งใหม่บ่อยครั้ง
                         </p>
                     </div>
                     <div class="p-3.5 bg-slate-950/40 rounded-xl border border-slate-850">
-                        <span class="text-amber-400 font-bold">📍 โรงอาหารตึกกิจกรรม (KFC):</span>
+                        <span class="text-amber-400 font-bold block">📍 โรงอาหารตึกกิจกรรม (KFC) Context</span>
                         <p class="text-slate-300 mt-1">
-                            แม้ราคาเฉลี่ยต่อจานจะแพงกว่าหอหญิง แต่ได้รับการตัดสินใจยอมรับในมิติความเย็นสบายและการพักผ่อน เพราะ **"อากาศถ่ายเทได้ดีและที่นั่งเย็นกว่า"** การสลับความต้องการจาก หญ. มา KFC จึงจัดเป็น Fallback ทางจิตวิทยาที่ใช้ดึงดูดใจผู้ใช้งานได้เป็นอย่างดี
+                            ราคาอาหารต่อมื้ออาจสูงกว่าหอหญิงเล็กน้อย แต่ชนะขาดลอยในมิติความรื่นรมย์การพักผ่อน เนื่องจากสภาพอาคารเป็นระบบถ่ายเทกระแสลมธรรมชาติได้ดี ที่นั่งรับประทานอาหารเย็นชื่นใจกว่า จึงถูกนำมาใช้เป็นช่องทางดึงดูดใจผู้ใช้ให้เบี่ยงเบนเส้นทาง
                         </p>
                     </div>
                 </div>
             </div>
 
-            <!-- METRICS COMPLIANCE INFO -->
-            <div class="bg-slate-900/30 border border-slate-800 rounded-3xl p-5 flex items-center justify-between text-xs text-slate-400">
-                <span class="flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                    Interactive Simulator Built with Tailwind CSS & Clean Javascript
-                </span>
-                <span class="font-bold text-amber-500">Passed WCAG Contrast Ratio AA</span>
+            <!-- TOKEN ALIGNMENT TABLE -->
+            <div class="bg-slate-900/40 border border-slate-800/80 rounded-3xl p-6">
+                <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest">Design System Tokens Specs (Week 9 Support)</h3>
+                <div class="mt-4 text-xs overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-800 text-slate-500">
+                                <th class="pb-2 font-semibold">Token</th>
+                                <th class="pb-2 font-semibold">Value / Spec</th>
+                                <th class="pb-2 font-semibold">Theory Support</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-850 text-slate-300">
+                            <tr>
+                                <td class="py-2.5 font-bold text-amber-500">Semantic Color</td>
+                                <td class="py-2.5">Emerald 500 / Amber 500 / Rose 500</td>
+                                <td class="py-2.5">**Traffic Light Rule** เพื่อการตอบรับข้อมูลรวดเร็ว</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 font-bold text-amber-500">Typography</td>
+                                <td class="py-2.5">Font Family: Prompt (SIT Native Layout)</td>
+                                <td class="py-2.5">**Type Scale Scale** เพื่อ Visual Hierarchy ระดับสายตา</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 font-bold text-amber-500">Spacing Grid</td>
+                                <td class="py-2.5">Margin / Padding: Base 8px, 16px, 24px</td>
+                                <td class="py-2.5">**8-Point Grid Spacing** เพิ่ม Whitespace รักษาความสะอาด</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 font-bold text-amber-500">Target Scale</td>
+                                <td class="py-2.5">Interactive target bounds > 44px</td>
+                                <td class="py-2.5">ป้องกันปัญหานิ้วใหญ่กดพลาดตามหลัก **Fitts's Law**</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </div>
 
     </div>
 
-    <!-- Simulator Application JavaScript -->
+    <!-- ================= FLOATING SANDBOX FLOATING CONTROLLER (Discreet drawer for full-screen UT testing) ================= -->
+    <div id="immersiveFloatingControls" class="fixed bottom-6 right-6 z-50 hidden select-none">
+        <!-- Floating Gear trigger button -->
+        <button id="floatingGearBtn" onclick="toggleFloatingDrawer()" class="w-12 h-12 bg-slate-900/90 border border-slate-700 text-amber-400 hover:text-amber-300 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 active:scale-90 hover:rotate-45">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </button>
+
+        <!-- Dynamic Drawer Menu options -->
+        <div id="floatingDrawer" class="absolute bottom-16 right-0 w-64 bg-slate-900/95 border border-slate-800 p-4 rounded-3xl shadow-2xl flex flex-col gap-3 scale-0 origin-bottom-right opacity-0 transition-all duration-300">
+            <div class="border-b border-slate-800 pb-2">
+                <h4 class="text-xs font-black text-amber-400">แผงจำลองสถานะของผู้วิจัย (Moderator Panel)</h4>
+                <p class="text-[10px] text-slate-500 mt-0.5">ใช้แอบกระตุ้นสถานการณ์ช่วงผู้ใช้งานกำลังทดสอบจริง</p>
+            </div>
+            
+            <button onclick="triggerBlackSwanSimulation(); toggleFloatingDrawer();" class="py-2 px-3 bg-rose-600/15 hover:bg-rose-600/25 border border-rose-500/20 text-rose-300 text-[11px] font-bold rounded-xl transition-all text-left">
+                Trigger Black Swan (ทัวร์ลง หญ.)
+            </button>
+            
+            <button onclick="toggleHerdEffectSimulation(); toggleFloatingDrawer();" class="py-2 px-3 bg-blue-600/15 hover:bg-blue-600/25 border border-blue-500/20 text-blue-300 text-[11px] font-bold rounded-xl transition-all text-left">
+                Toggle Herd Balancing (Cohort B)
+            </button>
+            
+            <button onclick="resetAllSimulation(); toggleFloatingDrawer();" class="py-2 px-3 bg-slate-800 hover:bg-slate-750 text-slate-300 text-[11px] font-semibold rounded-xl transition-all text-left">
+                Reset App to Default State
+            </button>
+
+            <button onclick="toggleImmersiveMode(false); toggleFloatingDrawer();" class="py-2 px-3 bg-slate-950 border border-slate-800 hover:border-slate-700 text-amber-500 text-[11px] font-extrabold rounded-xl transition-all text-left flex items-center justify-between">
+                <span>🔙 ออกจากโหมดเต็มจอ</span>
+                <span class="text-[9px] bg-slate-850 px-1.5 py-0.5 rounded text-slate-500">Split View</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Simulator Logic Javascript -->
     <script>
-        // System variables
+        // App settings state
+        let isImmersiveActive = false;
+        let isDrawerOpen = false;
+
         let selectedCanteen = 'horying';
         let swanActive = false;
         let herdCohortB = false;
         let sliderVal = 1;
 
-        // Structured data matching the interview results and PRD
+        // Dataset matching Nod's localized canteens "หญ. vs KFC" 
         const forecastDB = {
             horying: {
                 title: "โรงอาหารหอหญิง (หญ.)",
@@ -444,7 +530,7 @@
             }
         };
 
-        // Switch active Canteen Tab
+        // Switch active Canteen Tab view
         function switchCanteenTab(target) {
             selectedCanteen = target;
             
@@ -464,7 +550,7 @@
             updateNudgeMessageBox();
         }
 
-        // Real-time occupancy UI updater (1.1)
+        // Live Occupancy Display Updater
         function updateDashboardView() {
             const data = forecastDB[selectedCanteen];
             document.getElementById('canteenDisplayName').innerText = data.title;
@@ -501,7 +587,7 @@
             }
         }
 
-        // Timeline Slider scrubbing (1.2)
+        // Timeline Slider scrubbing (Section 1.2)
         function scrubTimelineLogic(val) {
             sliderVal = parseInt(val);
             
@@ -578,6 +664,7 @@
             
             switchCanteenTab('horying');
             scrubTimelineLogic(3); // Snap slider to 12:00 PM Peak for demonstration
+            updateNudgeMessageBox();
         }
 
         // SANDBOX CONTROLLER: Toggle Edge Case 2 (Herd Load Balancer Cohort)
@@ -609,6 +696,7 @@
             document.getElementById('labelHerdStatus').className = "text-[8px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-bold uppercase";
 
             document.getElementById('scrubSlider').value = 1;
+            document.getElementById('scrubSlider').disabled = false;
 
             switchCanteenTab('horying');
             scrubTimelineLogic(1);
@@ -646,11 +734,87 @@
             }, 600);
         }
 
+        // Toggle Immersive Viewport Mode vs Split Screen Panel
+        function toggleImmersiveMode(activate) {
+            isImmersiveActive = activate;
+            
+            const dHeader = document.getElementById('desktopHeader');
+            const dControls = document.getElementById('desktopControls');
+            const lContainer = document.getElementById('layoutContainer');
+            const dShell = document.getElementById('deviceShell');
+            const dIsland = document.getElementById('dynamicIsland');
+            const sBar = document.getElementById('statusBar');
+            const floatControls = document.getElementById('immersiveFloatingControls');
+
+            if (activate) {
+                // Hide Desktop elements completely
+                dHeader.classList.add('hidden');
+                dControls.classList.add('hidden');
+                
+                // Maximize Device shell or stretch to screen if on real phone
+                lContainer.className = "w-full min-h-screen flex items-center justify-center p-0 md:p-4";
+                
+                // Style Phone mockup bezel to be less distinct or absolutely fill the mobile window
+                dShell.className = "relative w-full h-screen md:w-[375px] md:h-[812px] md:rounded-[50px] md:border-[6px] md:border-slate-800 md:ring-4 md:ring-slate-900 md:ring-offset-2 md:ring-offset-slate-950 flex flex-col overflow-hidden transition-all duration-300";
+                
+                // Render Notch and Status Bar only on Desktop bezel simulation, hide on true mobile view for absolute immersion
+                if (window.innerWidth < 768) {
+                    dIsland.classList.add('hidden');
+                    sBar.classList.add('hidden');
+                } else {
+                    dIsland.classList.remove('hidden');
+                    sBar.classList.remove('hidden');
+                }
+
+                // Show the discreet floating controls
+                floatControls.classList.remove('hidden');
+            } else {
+                // Restore split screen layout
+                dHeader.classList.remove('hidden');
+                dControls.classList.remove('hidden');
+                
+                lContainer.className = "max-w-6xl w-full p-4 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start transition-all duration-300";
+                dShell.className = "relative w-[375px] h-[812px] bg-slate-950 rounded-[50px] p-[10px] shadow-[0_0_50px_rgba(0,0,0,0.8)] border-[6px] border-slate-800 ring-4 ring-slate-900 ring-offset-2 ring-offset-slate-950 flex flex-col overflow-hidden transition-all duration-300";
+                
+                dIsland.classList.remove('hidden');
+                sBar.classList.remove('hidden');
+                
+                floatControls.classList.add('hidden');
+            }
+        }
+
+        // Toggle the Sandbox Drawer in immersive mode
+        function toggleFloatingDrawer() {
+            isDrawerOpen = !isDrawerOpen;
+            const drawer = document.getElementById('floatingDrawer');
+            if (isDrawerOpen) {
+                drawer.classList.remove('scale-0', 'opacity-0');
+                drawer.classList.add('scale-100', 'opacity-100');
+            } else {
+                drawer.classList.add('scale-0', 'opacity-0');
+                drawer.classList.remove('scale-100', 'opacity-100');
+            }
+        }
+
+        // Handle auto-updating clock
+        function startLiveClock() {
+            setInterval(() => {
+                const now = new Date();
+                let hours = now.getHours();
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+                document.getElementById('statusBarTime').innerText = `${hours}:${minutes} ${ampm}`;
+            }, 30000);
+        }
+
         // Bootstrap Initial View on Load
         window.onload = function() {
             updateDashboardView();
             updateChartHeights();
             updateNudgeMessageBox();
+            startLiveClock();
         }
     </script>
 </body>
