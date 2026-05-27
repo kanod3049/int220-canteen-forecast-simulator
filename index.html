@@ -10,12 +10,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
         body {
             font-family: 'Prompt', sans-serif;
-            background-color: #020617; /* Slate-950 */
+            background-color: #020617; /* Slate-950 background as KMUTT premium standard */
         }
-        /* Hide scrollbars for crisp native app experience */
+        /* Hide scrollbars for native app looks and feels */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -31,16 +32,16 @@
         .animate-pulse-slow {
             animation: pulse-ring 2s infinite ease-in-out;
         }
-        /* Custom range slider styling override */
+        /* Custom ranges thumb optimization for thumb zone safety on mobile */
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             background: #f59e0b; /* Amber-500 */
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
             transition: transform 0.1s ease;
         }
         input[type="range"]::-webkit-slider-thumb:hover {
@@ -109,18 +110,50 @@
                             <span class="text-xs font-black text-white block">Smart Canteen Hub</span>
                         </div>
                     </div>
-                    <div class="relative p-1.5 bg-slate-900 rounded-xl border border-slate-800">
-                        <svg class="w-3.5 h-3.5 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-                        <span class="absolute top-0.5 right-0.5 w-1.5 h-1.5 bg-rose-500 rounded-full animate-ping"></span>
-                    </div>
+                    
+                    <!-- Notification bell button (Clickable & Unread Badge Dismiss Logic) -->
+                    <button onclick="toggleNotificationDrawer()" class="relative p-1.5 bg-slate-900 hover:bg-slate-800 rounded-xl border border-slate-800 transition-all active:scale-90 flex items-center justify-center focus:outline-none" style="min-width: 36px; min-height: 36px;">
+                        <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                        <span id="unreadNotifBadge" class="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full animate-pulse"></span>
+                    </button>
                 </div>
 
                 <!-- SCROLLABLE MOBILE APP VIEWPORT (Main container) -->
-                <div class="flex-1 overflow-y-auto no-scrollbar px-3 py-3 bg-slate-950 flex flex-col gap-4">
+                <div class="flex-1 overflow-y-auto no-scrollbar px-3 py-3 bg-slate-950 flex flex-col gap-4 relative">
                     
+                    <!-- DYNAMIC NOTIFICATION DRAWER MODAL (Slides in gracefully on click) -->
+                    <div id="notifDrawer" class="absolute inset-x-0 top-0 bg-slate-900/98 border-b border-slate-800 p-4 flex flex-col gap-3.5 z-40 transform -translate-y-full opacity-0 pointer-events-none transition-all duration-300 shadow-2xl backdrop-blur-md">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                            <span class="text-xs font-black text-white flex items-center gap-1.5 font-semibold">
+                                <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                                Smart Notifications
+                            </span>
+                        </div>
+                        
+                        <!-- Canteen specific mock alerts (SIT localize insights) -->
+                        <div class="flex flex-col gap-2.5">
+                            <!-- Notification Item 1 -->
+                            <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-850 flex items-start gap-2.5">
+                                <span class="text-xs mt-0.5">⚠️</span>
+                                <div>
+                                    <h4 class="text-[11px] font-bold text-rose-400">โรงอาหารหอหญิง (หญ.) แน่นมาก</h4>
+                                    <p class="text-[10px] text-slate-400 mt-0.5 leading-relaxed">ขณะนี้มีประชากรหนาแน่นถึง 92% และคิวทำอาหารเฉลี่ยทะลุ 25 นาที แนะนำหลีกเลี่ยงหรือย้ายช่วงเวลา</p>
+                                </div>
+                            </div>
+                            <!-- Notification Item 2 -->
+                            <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-850 flex items-start gap-2.5">
+                                <span class="text-xs mt-0.5">❄️</span>
+                                <div>
+                                    <h4 class="text-[11px] font-bold text-emerald-400">ตึกกิจกรรม (KFC) ที่นั่งว่างเย็นฉ่ำ</h4>
+                                    <p class="text-[10px] text-slate-400 mt-0.5 leading-relaxed">ภายนอกอากาศร้อนอบอ้าวถึง 38°C แนะนำย้ายมาใช้บริการโรงอาหารตึกกิจกรรม (KFC) ตากแอร์เย็นสบาย ที่นั่งว่างสีเขียว</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- CANTEEN LOCATION TAB SELECTOR (หญ. vs KFC) -->
                     <div class="grid grid-cols-2 p-1 bg-slate-900 rounded-2xl border border-slate-800">
-                        <button id="btnHoryingTab" onclick="switchCanteenTab('horying')" class="py-2 text.5 text-[11px] font-bold rounded-xl transition-all duration-300 bg-amber-500 text-slate-950 shadow-md">
+                        <button id="btnHoryingTab" onclick="switchCanteenTab('horying')" class="py-2 text-[11px] font-bold rounded-xl transition-all duration-300 bg-amber-500 text-slate-950 shadow-md">
                             โรงอาหารหอหญิง (หญ.)
                         </button>
                         <button id="btnKfcTab" onclick="switchCanteenTab('kfc')" class="py-2 text-[11px] font-semibold rounded-xl transition-all duration-300 text-slate-400 hover:text-white">
@@ -136,17 +169,17 @@
                             </div>
                             <div class="flex-1">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-[9px] font-bold text-amber-400 uppercase tracking-wider">Smart Recommendation UI</span>
+                                    <span class="text-[9px] font-bold text-amber-400 uppercase tracking-wider">Smart Recommendation AI</span>
                                     <span id="nudgeBadge" class="text-[8px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full font-medium">11:45 AM Target</span>
                                 </div>
                                 <p id="nudgeMessage" class="text-xs text-slate-200 mt-1.5 leading-relaxed">
                                     <span class="font-bold text-amber-300">หลีกเลี่ยงการรอคิว 25 นาทีที่ หญ.:</span> หากเลื่อนเวลาพักเที่ยงไปรอบ <span class="font-bold text-white underline">12:45 น.</span> โรงอาหารจะโล่งขึ้น 60% พร้อมรับแต้ม <span class="text-emerald-400 font-bold">Green Campus x2</span>
                                 </p>
                                 <div class="flex gap-2 mt-3">
-                                    <button onclick="openSurveyModal()" class="flex-1 py-2 bg-amber-500 hover:bg-amber-600 active:scale-95 text-slate-950 font-black text-[11px] rounded-lg transition-all shadow-md">
+                                    <button onclick="openSurveyModal()" class="flex-1 py-1.5 bg-amber-500 hover:bg-amber-600 active:scale-95 text-slate-950 font-semibold text-[10px] rounded-lg transition-all shadow-md">
                                         Shift My Schedule
                                     </button>
-                                    <button id="nudgeAltBtn" onclick="switchCanteenTab('kfc')" class="flex-1 py-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 font-semibold text-[10px] rounded-lg transition-all">
+                                    <button id="nudgeAltBtn" onclick="switchCanteenTab('kfc')" class="flex-1 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 font-semibold text-[9px] rounded-lg transition-all">
                                         ไปกิน KFC (ที่นั่งเย็นกว่า)
                                     </button>
                                 </div>
@@ -167,7 +200,7 @@
                             </span>
                         </div>
 
-                        <!-- Canteen Title and Badge -->
+                        <!-- Canteen Title and Badge (Friction Free Layout) -->
                         <div class="flex justify-between items-center gap-2 border-b border-slate-800/80 pb-3">
                             <div class="flex-1 min-w-0">
                                 <h3 id="canteenDisplayName" class="text-xs font-bold text-white truncate">โรงอาหารหอหญิง (หญ.)</h3>
@@ -205,7 +238,7 @@
                             </div>
                         </div>
 
-                        <!-- Timeline Graphical Bars Layout -->
+                        <!-- Timeline Graphical Bars Layout (With accessibility shadow lines) -->
                         <div class="relative h-24 bg-slate-950 rounded-xl p-3 flex items-end justify-between border border-slate-850 overflow-hidden select-none">
                             <div class="absolute inset-x-0 top-6 border-t border-dashed border-blue-500/10 z-0"></div>
                             <div class="absolute inset-x-0 top-12 border-t border-dashed border-blue-500/5 z-0"></div>
@@ -246,7 +279,7 @@
 
                             <!-- Scrubbing vertical line indicator -->
                             <div id="scrubLine" class="absolute top-0 bottom-0 w-[2px] bg-amber-500 pointer-events-none transition-all duration-150" style="left: 11%;">
-                                <div class="w-2 h-2 bg-amber-400 rounded-full -ml-0.75 -mt-0.5"></div>
+                                <div class="w-2.5 h-2.5 bg-amber-400 rounded-full -ml-1 mt-0"></div>
                             </div>
                         </div>
 
@@ -276,10 +309,10 @@
                         </div>
                     </div>
 
-                    <!-- GEOGRAPHIC RESEARCH LOCAL INSIGHT CARD -->
-                    <div class="p-3.5 bg-slate-900/40 border border-slate-800 rounded-xl flex items-center gap-3 select-none">
+                    <!-- KMUTT STUDENT LOCALIZED VOICE DIALOGUE -->
+                    <div class="p-3 bg-slate-900/40 border border-slate-800 rounded-xl flex items-center gap-3 select-none">
                         <div class="w-8 h-8 rounded-full bg-slate-800/80 flex items-center justify-center font-bold text-[10px] text-slate-400 shrink-0">
-                            KMUTT
+                            VOICE
                         </div>
                         <p class="text-[10px] text-slate-400 leading-relaxed italic">
                             "ถ้าจะไป หญ. รีบไปก่อน 11:30 เถอะ แต่อย่าไปช่วง 12:15 น. เลย เพราะจะโดนร้านลืมบิล อดกินแถมเดินหาที่นั่งร้อนก็เหนื่อยเปล่า..."
@@ -293,7 +326,7 @@
                     <div class="w-28 h-1 bg-slate-800 rounded-full"></div>
                 </div>
 
-                <!-- USABILITY MODAL: Shift Schedule Confirmation & SEQ Questionnaire (Section 4.1 Post-Task Survey) -->
+                <!-- USABILITY MODAL: Shift Confirmation & SEQ Questionnaire (Section 4.1 Post-Task Survey) -->
                 <div id="surveyModal" class="absolute inset-0 bg-slate-950/95 z-50 flex items-center justify-center p-4 hidden transition-all duration-300">
                     <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl w-full max-w-xs flex flex-col gap-4 text-center shadow-2xl">
                         <div class="w-10 h-10 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center mx-auto text-lg font-bold">
@@ -315,13 +348,13 @@
                             
                             <!-- SEQ Scale Buttons (Standard Minimum 44x44px target on mobile) -->
                             <div class="flex justify-between gap-1 mt-2">
-                                <button onclick="selectSeqRating(1)" class="seq-key w-7 h-6.5 text-[10px] bg-slate-800 text-slate-400 hover:bg-rose-500 hover:text-slate-950 font-bold rounded-lg transition-all">1</button>
-                                <button onclick="selectSeqRating(2)" class="seq-key w-7 h-6.5 text-[10px] bg-slate-800 text-slate-400 hover:bg-rose-500 hover:text-slate-950 font-bold rounded-lg transition-all">2</button>
-                                <button onclick="selectSeqRating(3)" class="seq-key w-7 h-6.5 text-[10px] bg-slate-800 text-slate-400 hover:bg-amber-500 hover:text-slate-950 font-bold rounded-lg transition-all">3</button>
-                                <button onclick="selectSeqRating(4)" class="seq-key w-7 h-6.5 text-[10px] bg-slate-800 text-slate-400 hover:bg-amber-500 hover:text-slate-950 font-bold rounded-lg transition-all">4</button>
-                                <button onclick="selectSeqRating(5)" class="seq-key w-7 h-6.5 text-[10px] bg-slate-800 text-slate-400 hover:bg-emerald-500 hover:text-slate-950 font-bold rounded-lg transition-all">5</button>
-                                <button onclick="selectSeqRating(6)" class="seq-key w-7 h-6.5 text-[10px] bg-slate-800 text-slate-400 hover:bg-emerald-500 hover:text-slate-950 font-bold rounded-lg transition-all">6</button>
-                                <button onclick="selectSeqRating(7)" class="seq-key w-7 h-6.5 text-[10px] bg-slate-800 text-slate-400 hover:bg-emerald-500 hover:text-slate-950 font-bold rounded-lg transition-all">7</button>
+                                <button onclick="selectSeqRating(1, this)" class="seq-key w-7 h-6.5 text-[10px] bg-slate-800 text-slate-400 hover:bg-rose-500 hover:text-slate-950 font-bold rounded-lg transition-all">1</button>
+                                <button onclick="selectSeqRating(2, this)" class="seq-key w-7 h-6.5 text-[10px] bg-slate-800 text-slate-400 hover:bg-rose-500 hover:text-slate-950 font-bold rounded-lg transition-all">2</button>
+                                <button onclick="selectSeqRating(3, this)" class="seq-key w-7 h-6.5 text-[10px] bg-slate-800 text-slate-400 hover:bg-amber-500 hover:text-slate-950 font-bold rounded-lg transition-all">3</button>
+                                <button onclick="selectSeqRating(4, this)" class="seq-key w-7 h-6.5 text-[10px] bg-slate-800 text-slate-400 hover:bg-amber-500 hover:text-slate-950 font-bold rounded-lg transition-all">4</button>
+                                <button onclick="selectSeqRating(5, this)" class="seq-key w-7 h-6.5 text-[10px] bg-slate-800 text-slate-400 hover:bg-emerald-500 hover:text-slate-950 font-bold rounded-lg transition-all">5</button>
+                                <button onclick="selectSeqRating(6, this)" class="seq-key w-7 h-6.5 text-[10px] bg-slate-800 text-slate-400 hover:bg-emerald-500 hover:text-slate-950 font-bold rounded-lg transition-all">6</button>
+                                <button onclick="selectSeqRating(7, this)" class="seq-key w-7 h-6.5 text-[10px] bg-slate-800 text-slate-400 hover:bg-emerald-500 hover:text-slate-950 font-bold rounded-lg transition-all font-black">7</button>
                             </div>
                             <div class="flex justify-between text-[8px] text-slate-500 mt-1">
                                 <span>ยากมาก (Low UX)</span>
@@ -347,11 +380,12 @@
                     <span class="p-2 bg-amber-500 text-slate-950 rounded-xl font-bold">⚙️</span>
                     <h2 class="text-base font-black text-white">SIT Exam Sandbox Control Panel</h2>
                 </div>
-                
+                <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                    น้องน็อดสามารถใช้แผงควบคุมหลักตรงนี้ขณะที่กำลังพรีเซนต์กับอาจารย์บนหน้าจอเดสก์ท็อป เพื่อกดทดสอบและสั่งกระตุ้น (Trigger) เงื่อนไข **Edge Cases** ทางเทคนิคและทางพฤติกรรมยุ่งยากให้หน้าจอมือถือจำลองโชวะสับเปลี่ยนสถานะ (State Transition) ได้อย่างลื่นไหล:
+                </p>
 
                 <!-- Action Triggers Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
-                    
                     <!-- Edge Case 1 Container -->
                     <div class="p-4 bg-slate-950 rounded-2xl border border-slate-850 flex flex-col gap-2">
                         <div class="flex justify-between items-center">
@@ -383,7 +417,6 @@
                             Switch User Cohort (A / B)
                         </button>
                     </div>
-
                 </div>
 
                 <!-- Footer control actions -->
@@ -453,9 +486,7 @@
                     </table>
                 </div>
             </div>
-
         </div>
-
     </div>
 
     <!-- ================= FLOATING SANDBOX FLOATING CONTROLLER (Discreet drawer for full-screen UT testing) ================= -->
@@ -501,6 +532,8 @@
         let swanActive = false;
         let herdCohortB = false;
         let sliderVal = 1;
+        
+        let notifTimeout = null;
 
         // Dataset matching Nod's localized canteens "หญ. vs KFC" 
         const forecastDB = {
@@ -578,7 +611,7 @@
                     document.getElementById('liveLight').className = "w-2 h-2 bg-amber-500 rounded-full animate-pulse-slow";
                 } else {
                     document.getElementById('densityBadge').className = "px-2 py-1 text-[9px] font-black rounded-md bg-rose-500/10 text-rose-400 border border-rose-500/20 whitespace-nowrap";
-                    document.getElementById('liveLight').className = "w-2 h-2 bg-rose-500 rounded-full animate-pulse-slow";
+                    document.getElementById('liveLight').className = "w-2.5 h-2.5 bg-rose-500 rounded-full animate-pulse-slow";
                 }
 
                 document.getElementById('numOccupancy').innerText = stepData.occupancy;
@@ -656,6 +689,60 @@
             }
         }
 
+        // Reusable toast helper function
+        function showToast(message, isError = false) {
+            const existingToast = document.getElementById('appToast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+            
+            const toast = document.createElement('div');
+            toast.id = 'appToast';
+            toast.className = `fixed bottom-5 left-1/2 transform -translate-x-1/2 px-5 py-3 ${isError ? 'bg-rose-600 border-rose-500' : 'bg-emerald-600 border-emerald-500'} border text-white font-bold text-[11px] rounded-2xl shadow-2xl z-50 transition-all duration-300`;
+            toast.innerText = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+                setTimeout(() => { toast.remove(); }, 3000);
+            }, 3000);
+        }
+
+        // Notification Drawer Toggle with Smart 5-second auto dismiss
+        function toggleNotificationDrawer() {
+            const drawer = document.getElementById('notifDrawer');
+            const badge = document.getElementById('unreadNotifBadge');
+            
+            // Clear unread badge on click
+            if (badge) {
+                badge.classList.add('hidden');
+            }
+
+            if (drawer.classList.contains('-translate-y-full')) {
+                // Open Drawer Animation State
+                drawer.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
+                drawer.classList.add('translate-y-0', 'opacity-100', 'pointer-events-all');
+                
+                // Clear any existing active timer to prevent conflicts
+                clearTimeout(notifTimeout);
+                
+                // Start 5-second countdown to auto-close drawer gracefully
+                notifTimeout = setTimeout(() => {
+                    if (!drawer.classList.contains('-translate-y-full')) {
+                        drawer.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+                        drawer.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-all');
+                    }
+                }, 5000);
+            } else {
+                // Close manually
+                drawer.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+                drawer.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-all');
+                
+                // Reset active timer on early closed
+                clearTimeout(notifTimeout);
+            }
+        }
+
         // SANDBOX CONTROLLER: Trigger Edge Case 1 (Black Swan)
         function triggerBlackSwanSimulation() {
             swanActive = true;
@@ -698,6 +785,14 @@
             document.getElementById('scrubSlider').value = 1;
             document.getElementById('scrubSlider').disabled = false;
 
+            // Re-show notification badge for simulation resetting
+            const badge = document.getElementById('unreadNotifBadge');
+            if (badge) {
+                badge.classList.remove('hidden');
+            }
+            
+            clearTimeout(notifTimeout);
+
             switchCanteenTab('horying');
             scrubTimelineLogic(1);
         }
@@ -707,30 +802,24 @@
             document.getElementById('surveyModal').classList.remove('hidden');
         }
 
+        // Close Popups
         function closeSurveyModal() {
             document.getElementById('surveyModal').classList.add('hidden');
         }
 
         // Record SEQ Rating and show feedback toast
-        function selectSeqRating(score) {
+        function selectSeqRating(score, btn) {
             const keys = document.querySelectorAll('.seq-key');
             keys.forEach(k => {
                 k.className = "seq-key w-6.5 h-6.5 text-[10px] bg-slate-800 text-slate-400 hover:bg-emerald-500 hover:text-slate-950 font-bold rounded-lg transition-all";
             });
 
             // Highlight chosen
-            event.target.className = "seq-key w-6.5 h-6.5 text-[10px] bg-emerald-500 text-slate-950 font-black rounded-lg shadow-lg scale-110 transition-all";
+            btn.className = "seq-key w-6.5 h-6.5 text-[10px] bg-emerald-500 text-slate-950 font-black rounded-lg shadow-lg scale-110 transition-all";
 
             setTimeout(() => {
                 closeSurveyModal();
-                
-                // Show dynamic non-browser toast notification
-                const toast = document.createElement('div');
-                toast.className = "fixed bottom-5 left-1/2 transform -translate-x-1/2 px-5 py-3 bg-emerald-600 border border-emerald-500 text-white font-bold text-[11px] rounded-2xl shadow-2xl z-50 transition-all duration-350";
-                toast.innerText = `🎉 บันทึกผลลัพธ์ SEQ คะแนน ${score}/7 ลงชุดข้อมูล Usability แล้ว!`;
-                document.body.appendChild(toast);
-                
-                setTimeout(() => { toast.remove(); }, 3000);
+                showToast(`🎉 บันทึกผลลัพธ์ SEQ คะแนน ${score}/7 ลงชุดข้อมูล Usability แล้ว!`);
             }, 600);
         }
 
@@ -808,6 +897,22 @@
                 document.getElementById('statusBarTime').innerText = `${hours}:${minutes} ${ampm}`;
             }, 30000);
         }
+
+        // Close notification drawer when clicking outside of it
+        document.addEventListener('click', function(event) {
+            const drawer = document.getElementById('notifDrawer');
+            const notifBtn = document.querySelector('button[onclick="toggleNotificationDrawer()"]');
+            
+            // Check if click is outside the drawer and the notification button
+            if (!drawer.contains(event.target) && !notifBtn.contains(event.target)) {
+                // Only close if drawer is currently open
+                if (!drawer.classList.contains('-translate-y-full')) {
+                    drawer.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+                    drawer.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-all');
+                    clearTimeout(notifTimeout);
+                }
+            }
+        });
 
         // Bootstrap Initial View on Load
         window.onload = function() {
