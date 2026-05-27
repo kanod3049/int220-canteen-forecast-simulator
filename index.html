@@ -170,7 +170,7 @@
                             <div class="flex-1">
                                 <div class="flex items-center justify-between">
                                     <span class="text-[9px] font-bold text-amber-400 uppercase tracking-wider">Smart Recommendation AI</span>
-                                    <span id="nudgeBadge" class="text-[8px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full font-medium">11:45 AM Target</span>
+                                    <span id="nudgeBadge" class="text-[8px] bg-slate-800 text-slate-300 px-2 py-0.5 font-medium flex items-center justify-center w-fit">11:45 AM Target</span>
                                 </div>
                                 <p id="nudgeMessage" class="text-xs text-slate-200 mt-1.5 leading-relaxed">
                                     <span class="font-bold text-amber-300">หลีกเลี่ยงการรอคิว 25 นาทีที่ หญ.:</span> หากเลื่อนเวลาพักเที่ยงไปรอบ <span class="font-bold text-white underline">12:45 น.</span> โรงอาหารจะโล่งขึ้น 60% พร้อมรับแต้ม <span class="text-emerald-400 font-bold">Green Campus x2</span>
@@ -684,7 +684,7 @@
             } else {
                 box.className = "bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-2xl p-3.5 transition-all duration-300";
                 bBadge.innerText = "Cohort A Target Recommendation";
-                bBadge.className = "text-[8px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full font-medium";
+                bBadge.className = "text-[8px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full font-medium flex items-center justify-center min-w-max";
                 bMsg.innerHTML = `<span class="font-bold text-amber-300">หลีกเลี่ยงการรอคิว 25 นาทีที่ หญ.:</span> หากเลื่อนเวลาพักเที่ยงไปรอบ <span class="font-bold text-white underline">12:45 น.</span> โรงอาหารจะโล่งขึ้น 60% พร้อมรับแต้ม <span class="text-emerald-400 font-bold">Green Campus x2</span>`;
             }
         }
