@@ -811,11 +811,11 @@
         function selectSeqRating(score, btn) {
             const keys = document.querySelectorAll('.seq-key');
             keys.forEach(k => {
-                k.className = "seq-key w-6.5 h-6.5 text-[10px] bg-slate-800 text-slate-400 hover:bg-emerald-500 hover:text-slate-950 font-bold rounded-lg transition-all";
+                k.className = "seq-key w-7 h-6.5 text-[10px] bg-slate-800 text-slate-400 hover:bg-emerald-500 hover:text-slate-950 font-bold rounded-lg transition-all";
             });
 
             // Highlight chosen
-            btn.className = "seq-key w-6.5 h-6.5 text-[10px] bg-emerald-500 text-slate-950 font-black rounded-lg shadow-lg scale-110 transition-all";
+            btn.className = "seq-key w-7 h-6.5 text-[10px] bg-emerald-500 text-slate-950 font-black rounded-lg shadow-lg scale-110 transition-all";
 
             setTimeout(() => {
                 closeSurveyModal();
